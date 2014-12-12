@@ -1,7 +1,7 @@
 Poska-hackers
 =============
 
-This is repository created for learning python and teamwork
+This is repository created for learning python and teamwork, created by Andres Jõgi, Kristo Allaje and Siim Järg
 
 
 ---GUIDELINES---
