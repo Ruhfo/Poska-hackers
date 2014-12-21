@@ -2,6 +2,7 @@
 import configparser
 
 def write_config():
+#Opening config.ini and writting default values there
     config = configparser.ConfigParser()
     config["DEFAULT"] ={"PORT"  : 12345,
                         "NAME"  : "Default chat server"
@@ -11,12 +12,10 @@ def write_config():
 
 #Read existing config file to retrieve settings
 def read_config(configfile):
+#Opening config.ini and reading values from there
     config = configparser.ConfigParser()
     config.read("config.ini")
     
-    global port
-    global name
-
     default = config["DEFAULT"]
 
     port = default.get("PORT","12345")
@@ -27,6 +26,7 @@ def read_config(configfile):
     return (port, name)
 
 def configurator():
+#Read configuration file if possible and create one if needed
     try:
         config = open("config.ini", "r")
     except IOError:
