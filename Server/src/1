@@ -5,13 +5,11 @@ import configuration
 import queue
 import threading
 
-def receive (c):
+def receive (argc):
 #Function responsible for listening to one client
     while True:
-        assert (c.recv != b''), "No message"
+        c = argc(0)
         length = c.recv(1) #aquiring message length       
-        length = length.decode()
-        print("Length: ", length)
         msg = c.recv(length) #aquiring message itself
         
         while (len(msg) < length):
@@ -44,8 +42,9 @@ while True:
     msg = message.encode() 
     
     c.send(msg)
-    t = threading.Thread(target=receive(c))
-    t.daemon= True
+    argc = {c}    
+    t = threading.Thread(target=receive,args=(argc))
+    daemon = True #Set this thread to daemon thread
     threads.append(t)
     t.start()
     
