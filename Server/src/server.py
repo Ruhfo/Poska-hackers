@@ -5,21 +5,31 @@ import configuration
 import queue
 import threading
 
+DEFAULT_LENGTH = 255
+
 def receive (c):
 #Function responsible for listening to one client
     while True:
-        assert (c.recv != b''), "No message"
-        length = c.recv(1) #aquiring message length       
-        length = length.decode()
-        print("Length: ", length)
-        msg = c.recv(length) #aquiring message itself
+        length = c.recv(1)
+        if (len(length) > 0):
+            length = length.decode()
+            if (type(length) == int):
+                length = int(length)
+            else:
+                length = DEFAULT_LENGTH
+            msg = c.recv(length) #aquiring message itself
+            
+            while (len(msg)<length):
+                msg += c.recv(length-len(msg))
         
-        while (len(msg) < length):
-            msg+= c.recv
-        
-        message = (c , msg)
-        msgQueue.put(message) #Add msg to queue 
-
+            message = (c , msg)
+            msgQueue.put(message) #Add msg to queue 
+            print("Message: ", msg.decode())
+        else:
+            print("Client has disconnected") 
+            clients.remove(c)
+            c.close
+            return
 
 #Configuring initial parametres
 msgQueue = queue.Queue()
@@ -44,11 +54,12 @@ while True:
     msg = message.encode() 
     
     c.send(msg)
+
     t = threading.Thread(target=receive(c))
     t.daemon= True
     threads.append(t)
     t.start()
-    
+
     if msgQueue.qsize() > 0:
 
         for i in range(msgQueue.qsize()):
@@ -61,4 +72,3 @@ while True:
                 else:
                     continue
             msgQueue.task_done()
-                
