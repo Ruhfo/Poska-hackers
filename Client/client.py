@@ -4,7 +4,9 @@ import socket
 import struct
 
 DEFAULT_LENGTH = 2048
+
 def receive_message(sock):
+    #This function is responsible for receiving and decoding messages sent by server
     blength  = sock.recv(4)
     
     if (len(blength) > 0): 
@@ -32,7 +34,21 @@ def receive_message(sock):
         print("We have lost connection with the server")
         sock.close   
         return
- 
+
+def send_message(sock, message):
+    #This function is responsible for sending messages to server
+    msg = message.encode()
+    length = len(msg)
+    
+    blength = struct.pack("I", length)
+
+    sent = 0
+    client.send(blength)
+
+    while(sent<length):
+        #Send parts of string until everything is sent
+        sent= client.send(msg[sent:])
+    
 s = socket.socket()
 host = socket.gethostname()
 port = 12345

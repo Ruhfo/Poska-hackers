@@ -17,7 +17,6 @@ def receive (c):
         if (len(length) > 0): #Aquiring message length
 
             length = struct.unpack("I", length) 
-
             
             chunks = []
             msgLength = 0
@@ -40,7 +39,7 @@ def receive (c):
             c.close
             return
 
-def sendMessage (message, client):
+def send_message (message, client):
 #This function is responsible for sending one message to a client
     msg = message.encode() 
     length = len(msg)
@@ -63,7 +62,7 @@ host = socket.gethostname() #
 s.bind((host, port)) #Binding host to port
 
 clients = [] #Creating a list containing client's addresses
-threads = [] #Creating a list containing threads 
+threads = [] #Creating a list containing listener threads 
 
 s.listen(5)
 while True:
@@ -71,17 +70,12 @@ while True:
     c, addr =  s.accept()  #Accepting new connection 
    
     clients.append(c)  
-   
     print("New connection from ", addr, "Type", type(c) )
-    message = "Welcome to "+name
-    
-    sendMessage(message, c)
 #Starting new listener thread
     t = threading.Thread(target=receive(c))
     t.daemon= True
     threads.append(t)
     t.start()
-
 # Sending message to all the clients
     if msgQueue.qsize() > 0:
 
@@ -91,7 +85,7 @@ while True:
 
             for c in clients:
                 if (c != client):
-                   sendMessage(msg, c) 
+                   send_message(msg, c) 
                 else:
                     continue
             msgQueue.task_done()

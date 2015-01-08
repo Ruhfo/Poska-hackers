@@ -10,7 +10,6 @@ def write_config():
     with open("config.ini", "w") as configfile:
         config.write(configfile)
 
-#Read existing config file to retrieve settings
 def read_config(configfile):
 #Opening config.ini and reading values from there
     config = configparser.ConfigParser()
