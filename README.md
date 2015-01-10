@@ -12,9 +12,13 @@ able to connect easily.
 
 --Requirements--
 
-//Here we are going to list features our application(s) are required to have
+Application must allow users to communicate through it
+Application must be useable
+Application must not crash
 
 --TO DO--
+Make Server and Client classes or merge both functions together to one Communications class
+make GUI not shit
+have server broadcast it's IP and Port through UDP
 
-//here we are going to list what someone is doing at the moment
 
