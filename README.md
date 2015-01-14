@@ -12,7 +12,12 @@ able to connect easily.
 
 --Requirements--
 
-//Here we are going to list features our application(s) are required to have
+*Program must be capable of providing relatively reliable messaging system
+*Program must use TCP for sending messages
+*Server should broadcast it's name and used port in local network
+*GUI must provide overview of connected clients, show messages and allow user to writte messages
+*Message length must be limited
+
 
 --TO DO--
 
