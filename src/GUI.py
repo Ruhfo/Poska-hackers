@@ -1,6 +1,7 @@
 #!bin/usr/env python3
 
 import tkinter as tk
+import threading
 
 class Applet ():
 #Class for GUI components
@@ -32,10 +33,10 @@ class Applet ():
         
         #Send button 
         self.sendButton = tk.Button(self.inputFrame, height = 1, text = "Send",
-                                command = self.send_input)
+                                    command = lambda: self.send_input)
         self.sendButton.pack(side = tk.RIGHT)
 
-        #Key commands
+        #Key commands:
         self.usrInput.bind("<Return>", self.event_handler)
         
         #Starting event listener mainloop
@@ -50,14 +51,12 @@ class Applet ():
     def send_input(self):
         #Function for sending user input
         msg = self.usrInput.get()
-        self.usrInput.delete(first=0,last=tk.END)
         self.receive_message(msg+"\n")
+        self.usrInput.delete(first=0,last=tk.END)
 
     def receive_message(self, message):
         #function for displaying incoming messages
         self.feed.configure(state=tk.NORMAL)
         self.feed.insert(tk.INSERT,message)
         self.feed.configure(state=tk.DISABLED)
-
-
 
